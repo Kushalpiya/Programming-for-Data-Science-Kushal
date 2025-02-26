@@ -1,0 +1,101 @@
+---
+title: "Assignment"
+author: "Kushal Piya"
+date: "2025-02-24"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question1
+## i,ii 
+![Fibonacci Flow Chart](Fibonacci.png)
+```{r}
+fibSequence<- function(len = 10){
+  if(len <=0){
+    stop("Length should be greater than 1.")
+  }
+  fibSeq <- numeric(len)
+  fibSeq[1] <- 0
+  if (len > 1) {
+    fibSeq[2] <- 1
+  }
+  if (len >2){
+    for (i in 3:len) {
+      fibSeq[i] <- fibSeq[i - 1] + fibSeq[i - 2]
+    }
+  }
+  
+  res <- list(cSeqType = "Fibonacci", 
+              nSeqLen = len, 
+              iFibSeq = fibSeq)
+  return(res)
+}
+
+fibonacci1 <- fibSequence(1)
+fibonacci35 <- fibSequence(35)
+
+print(fibonacci1)
+print(fibonacci35)
+```
+
+## Question 1
+## iii
+
+```{r}
+mySequence <- function(len = 10) {
+  # len = requested sequence length
+  sequence_result <- c()
+  # Starting from 1 until we get 'len' number of sequence
+  number <- 1
+  while (length(sequence_result)<len) {
+    # Divisible by 2 and 3 or not
+    if (number%%2 != 0 && number%%3 != 0) {
+      sequence_result <- c(sequence_result,number)
+    }
+    number <- number + 1 #Checking next number
+  }
+  # Package the results 
+  
+  res <- list(cSeqType = "Not divisible by 2 or 3", 
+              nSeqLen = len, 
+              iMySeq = sequence_result) 
+  return(res) 
+}
+
+sequence1 <- mySequence(1)
+sequence56 <- mySequence(56)
+
+print(sequence1)
+print(sequence56)
+```
+
+## Question 2
+## i
+```{r}
+species_boxplots <- function(){
+  par(mfrow = c(2,2))
+  # Box plot for Sepal Length by Species
+  boxplot(Sepal.Length~Species,data = iris,
+          main ="Sepal Length", xlab = "Species",ylab = "Sepal Length",
+          col = c("red","lightgreen","lightblue"))
+  # Box plot for Sepal Width by Species
+  boxplot(Sepal.Width~Species,data = iris,
+          main ="Sepal Width", xlab = "Species",ylab = "Sepal Width",
+          col = c("red","lightgreen","lightblue"))
+  # Box plot for Petal Length by Species
+  boxplot(Petal.Length~Species,data = iris,
+          main ="Petal Length", xlab = "Species",ylab = "Petal Length",
+          col = c("red","lightgreen","lightblue"))
+  # Box plot for Petal Width by Species
+  boxplot(Petal.Width~Species,data = iris,
+          main ="Petal Width", xlab = "Species",ylab = "Petal Width",
+          col = c("red","lightgreen","lightblue"))
+}
+species_boxplots()
+```
+
