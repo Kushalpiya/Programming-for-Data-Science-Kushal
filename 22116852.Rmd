@@ -99,3 +99,62 @@ species_boxplots <- function(){
 species_boxplots()
 ```
 
+## Question 2
+## ii
+```{r}
+outlierThresholds <- function(x, k = 1.5) { 
+  # x = vector to be processed
+  # note x belongs to a single category of data
+  # k = k value to be used by Tukey's approach
+  q1 <- quantile(x,probs = 0.25)
+  
+  q3 <- quantile(x,probs = 0.75)
+  
+  # Calculating the interquartile range
+  iqr <- q3-q1
+  
+  # Calculating the lower and upper thresholds using Tukey's fences
+  lowerThreshold <- q1 - k*iqr
+  upperThreshold <- q3 + k*iqr
+  
+  # Returning the thresholds as vector
+  result <- c(Upper = upperThreshold,Lower = lowerThreshold)
+  return(result)
+}
+outlierThresholds(iris$Sepal.Length)
+```
+## Question 2
+## iii
+```{r}
+outlierIds_helper <- function(x, k = 1.5) {
+  # x = vector to be processed
+  # note x belongs to a single category of data
+  # k = k value to be used by Tukey's approach
+  q1 <- quantile(x,probs = 0.25)
+  
+  q3 <- quantile(x,probs = 0.75)
+  
+  # Calculating the interquartile range
+  iqr <- q3-q1
+  
+  # Calculating the lower and upper thresholds using Tukey's fences
+  lowerThreshold <- q1 - k*iqr
+  upperThreshold <- q3 + k*iqr
+  
+  # Finding the indices of outliers
+  outlier_indices <- which(x < lowerThreshold | x > upperThreshold)
+  
+  if (length(outlier_indices)==0) {
+    return(NULL)
+  }
+  else{
+    # Returning indices of outliers
+    return(outlier_indices)
+  }
+}
+
+outlierIds_helper(iris$Sepal.Length)
+```
+
+
+
