@@ -12,20 +12,29 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Question1
-## i,ii 
+## i. 
+Your task is to generate a sequence of numbers that are known as a Fibonacci Sequence. The only input to this task is the required length of the sequence. 
+Generate a Flow Chart that describes the key parts of the algorithm. The flow chart does not need to be fancy in appearance, just complete regarding the key steps. You are free to simply do a clear hand drawing and to include it as an image in your answer file.
+
 ![Fibonacci Flow Chart](Fibonacci.png)
+
+## Question1
+## ii. 
+Implement the flow chart created in (i) using R. Place the generated code within a function called fibSequence. The below listing shows the required function template to be used. Include the output of the sequences of length 1 and 35 in your answers.
 ```{r}
 fibSequence<- function(len = 10){
+  # Generating a fibonacci sequence of given length
   if(len <=0){
     stop("Length should be greater than 1.")
   }
   fibSeq <- numeric(len)
-  fibSeq[1] <- 0
+  fibSeq[1] <- 0 # First number of sequence is 0
   if (len > 1) {
-    fibSeq[2] <- 1
+    fibSeq[2] <- 1  # Second number of sequence is 0
   }
   if (len >2){
     for (i in 3:len) {
+      # Another number is the sum of first two numbers
       fibSeq[i] <- fibSeq[i - 1] + fibSeq[i - 2]
     }
   }
@@ -44,22 +53,20 @@ print(fibonacci35)
 ```
 
 ## Question 1
-## iii
+## iii. 
+Create a function to generate a sequence of numbers starting at one and where every number is neither divisible by 2 or 3. Use the following function template for this task. Include the output of the sequences of length 1 and 56 in your answers.
 
 ```{r}
 mySequence <- function(len = 10) {
-  # len = requested sequence length
   sequence_result <- c()
-  # Starting from 1 until we get 'len' number of sequence
   number <- 1
   while (length(sequence_result)<len) {
-    # Divisible by 2 and 3 or not
+    # Checking if the number is divisible by 2 or 3 or not
     if (number%%2 != 0 && number%%3 != 0) {
       sequence_result <- c(sequence_result,number)
     }
-    number <- number + 1 #Checking next number
+    number <- number + 1
   }
-  # Package the results 
   
   res <- list(cSeqType = "Not divisible by 2 or 3", 
               nSeqLen = len, 
@@ -75,23 +82,20 @@ print(sequence56)
 ```
 
 ## Question 2
-## i
+## i. 
+For this question we are going to use the built-in data set called iris. The iris data set gives the measurements in centimetres of the variables sepal length and sepal width and petal length and petal width, respectively, for 50 flowers from each of 3 species of iris. The species are setosa, versicolor, and virginica. The first six lines of the iris data set are shown in figure 1. More detail can be found within R using the help command ?iris. Write a function to produce the output shown in figure 2. The function must make use of the plot() function provided in the base package; using something else like ggplot risks getting zero.
 ```{r}
 species_boxplots <- function(){
   par(mfrow = c(2,2))
-  # Box plot for Sepal Length by Species
   boxplot(Sepal.Length~Species,data = iris,
           main ="Sepal Length", xlab = "Species",ylab = "Sepal Length",
           col = c("red","lightgreen","lightblue"))
-  # Box plot for Sepal Width by Species
   boxplot(Sepal.Width~Species,data = iris,
           main ="Sepal Width", xlab = "Species",ylab = "Sepal Width",
           col = c("red","lightgreen","lightblue"))
-  # Box plot for Petal Length by Species
   boxplot(Petal.Length~Species,data = iris,
           main ="Petal Length", xlab = "Species",ylab = "Petal Length",
           col = c("red","lightgreen","lightblue"))
-  # Box plot for Petal Width by Species
   boxplot(Petal.Width~Species,data = iris,
           main ="Petal Width", xlab = "Species",ylab = "Petal Width",
           col = c("red","lightgreen","lightblue"))
@@ -100,31 +104,31 @@ species_boxplots()
 ```
 
 ## Question 2
-## ii
+## ii. 
+Using Tukey’s fences and using a default value of k = 1.5, write a function to produce a pair of numbers that correspond to the upper and lower limits of valid data, hence anything outside those limits is considered an outlier. This function accepts two arguments, the first containing the relevant data, the second contains the k value to use, use a default k value as declared above. The function returns a vector with labelled thresholds. Use the below function template.
 ```{r}
 outlierThresholds <- function(x, k = 1.5) { 
   # x = vector to be processed
   # note x belongs to a single category of data
   # k = k value to be used by Tukey's approach
-  q1 <- quantile(x,probs = 0.25)
+  q1 <- quantile(x,probs = 0.25) # First quartile (Q1)
   
-  q3 <- quantile(x,probs = 0.75)
+  q3 <- quantile(x,probs = 0.75) # Third quartile (Q1)
   
-  # Calculating the interquartile range
-  iqr <- q3-q1
+  iqr <- q3-q1 # Interquartile range (IQR)
   
-  # Calculating the lower and upper thresholds using Tukey's fences
+  # Calculating lower and upper threshold using Tukey's method
   lowerThreshold <- q1 - k*iqr
   upperThreshold <- q3 + k*iqr
   
-  # Returning the thresholds as vector
   result <- c(Upper = upperThreshold,Lower = lowerThreshold)
   return(result)
 }
 outlierThresholds(iris$Sepal.Length)
 ```
 ## Question 2
-## iii
+## iii. 
+Using the function created in (ii), write a function to provide the indexes of a set of outliers. Add the suffix ” helper” to the function name, since it just processes a single category of data. Use the below function template.
 ```{r}
 outlierIds_helper <- function(x, k = 1.5) {
   # x = vector to be processed
@@ -134,21 +138,18 @@ outlierIds_helper <- function(x, k = 1.5) {
   
   q3 <- quantile(x,probs = 0.75)
   
-  # Calculating the interquartile range
   iqr <- q3-q1
   
-  # Calculating the lower and upper thresholds using Tukey's fences
   lowerThreshold <- q1 - k*iqr
   upperThreshold <- q3 + k*iqr
   
-  # Finding the indices of outliers
+  # Identifying the value that is outliers
   outlier_indices <- which(x < lowerThreshold | x > upperThreshold)
   
   if (length(outlier_indices)==0) {
     return(NULL)
   }
   else{
-    # Returning indices of outliers
     return(outlier_indices)
   }
 }
@@ -156,28 +157,31 @@ outlierIds_helper <- function(x, k = 1.5) {
 outlierIds_helper(iris$Sepal.Length)
 ```
 ## Question 3
-## i
+## i. 
+Making use of code you have already created, create a function to process the entire iris dataset and produce a list structure containing indexes(IDs) pointing to alloutliers.Use the below function template.
 ```{r}
 outliers <-function(x, mask, k = 1.5) {
   # x = is the data set to be processed, for our purposes the entire iris data set 
   # mask = is a vector containing the species of the row in x being processed 
   # k = k value to be used by Tukey approach
   
-  res <- list()
-  speciesLevels <- unique(mask)
+  res <- list() # Creating the list
+  speciesLevels <- unique(mask) # Getting all the species Names
+  # Iterating over each column in dataset
   for(columnName in colnames(x)){
     columnList <- list()
-    
+    # Iterating over each species
     for (speciesName in speciesLevels) {
-      sub_data <- x[mask == speciesName , columnName]
+      sub_data <- x[mask == speciesName , columnName] # Subset data for the species
       
+      # Finding outliers using the helper function which we created in question 2
       outliers_in_sub_data <- outlierIds_helper(sub_data,k)
       
       if (!is.null(outliers_in_sub_data)) {
         allOutliers <- which(mask == speciesName)[outliers_in_sub_data]
-        columnList[[speciesName]] <- allOutliers
+        columnList[[speciesName]] <- allOutliers # Storing outliers in the list
       } else {
-        columnList[[speciesName]] <- numeric(0)
+        columnList[[speciesName]] <- numeric(0) # Storing empty variable if there is no outlier
       }
     }
     res[[columnName]] <- columnList
@@ -188,7 +192,18 @@ res <-outliers(iris[,-5], iris$Species)
 res
 ```
 ## Question 3
-## ii
+## ii. 
+Extend the functionality provided by the functionoutliers(),which was created in (i). Use the below function template, the following list states the approach to be followed within this function:
+Subset originally provided data
+Use the existing functionality of outliers(),passing new subset
+Using the output of outliers(),provide additional functionality to achieve the following
+
+–Provide the data returned by outliers(), but one on its own branch called outliers
+
+–Add a branch called rowsWithOutliers, containing a vectorofrowIDs
+
+–Add a branch called outlierCount
+
 ```{r}
 
 outliersExt <-function(x, mask, k = 1.5, 
@@ -200,13 +215,12 @@ outliersExt <-function(x, mask, k = 1.5,
   # colSelect = one or more numeric columns to used
   # y = new subset of x res <-outliers(y, mask, k) 
   y <- x[,colSelect, drop = FALSE] # drop = FALSE returns a data frame of one column instead of vector
-  
+  # Detecting outliers using the function we created earlier
   res<- outliers(y,mask,k)
-  
+  # Extracting all the outliers from the list and putting them in a single vector and remove the duplicate
+  # using the unique function
   rows_with_outliers <- unique(unlist(res))
-  
-
-  
+  # Counting the total number of outliers
   outlier_count <- length(rows_with_outliers)
   result <- list(
     outliers = res,
@@ -220,15 +234,24 @@ outliersExt(iris[, -5], iris$Species, colSelect = 'Sepal.Length')
 ```
 
 ## Question 3
-## iii
-In this experiment, I found the minimum value of k that results in fewer than 10 outliers when OutliersExt() function is applied to entire iris dataset. The experiment involved adjusting k gradually in place of first decimal starting with 1.5. 
+## iii. 
+Making use of outliersExt(), perform a simple experiment to determine the minimum k value, accurate to one decimal place,that results in less than ten outliers when the entire iris dataset is used. You are not required to write any new code for this task. Simply use an intelligent search strategy, perhaps a simplified divide-and-conquer algorithm,which amounts to continually halving the search space.
+
+-> In this experiment, I found the minimum value of k that results in fewer than 10 outliers when OutliersExt() function is applied to entire iris dataset. The experiment involved adjusting k gradually in place of first decimal starting with 1.5.
+
 When k = 1.5, the number of outliers was 13.
+
 When k = 1.6, the number of outliers was 11.
+
 When k = 1.7, the number of outliers was 8.
+
 As we have found that, with k = 1.7 the number of outliers was below 10 which satisfies our condition. 
 
 ## Question 4
-## i
+## i 
+This question reuses the work performed in questions 2 and 3. You are required to answer either (i) or (ii); hence, only answer one sub-question. If you answer both sub-questions, you will, at best, only get a mark for (i). In answering either (i) or (ii), any output included in the R Markdown document, must be generated using the k value determined in Q3 (iii). Of cause you should test your code using other k values. 
+(i) Making use of code you have already created, create a function to produce the scatter plot shown in figure 3, which shows data that is considered reliable and any outliers. Use the below function template.
+In developing outlierPlot() you are required to make use of the base package functions plot(), legend(), text(), the use of alternatives gets you zero marks for this question.
 ```{r}
 outlierPlot <- function(x, outlierIDs = NULL, 
                         axes = c("Sepal.Length", "Sepal.Width")) {
@@ -236,12 +259,16 @@ outlierPlot <- function(x, outlierIDs = NULL,
   # outliersIDs = outlier data generated by earlier developed code 
   # axes = axes to be shown
   species_colors <- c("setosa" = "red", "versicolor" = "green", "virginica" = "blue")
+  # Collecting all the outliers from the list
   all_outliers <- unique(unlist(outlierIDs))
+  # Identifying non outliers to plot normally 
   non_outliers <- setdiff(1:nrow(x), all_outliers)
+  # Plotting a scatter plot without outliers
   plot(x[non_outliers, axes[1]], x[non_outliers, axes[2]], 
        col = species_colors[x$Species[non_outliers]], pch = 16, 
-       main = "Reliable versus Outliers", 
+       main = "Reliable versus Outliers",
        xlab = axes[1], ylab = axes[2])
+  # Plotting Outliers as "X" in the scatter plot
   if (!is.null(outlierIDs)) {
     for (species in names(species_colors)) {  
       outlier_rows <- unique(unlist(lapply(outlierIDs, `[[`, species)))
