@@ -283,7 +283,10 @@ outlierPlot <- function(x, outlierIDs = NULL,
          legend = c("setosa", "versicolor", "virginica"), 
          col = c("red", "green", "blue", "black"), pch = c(16, 16, 16, 4), 
          bty = "o", text.col = "black", cex = 0.9)
-  text(x = 7.2, y = 1.2, labels = "X indicates an outlier", cex = 1, adj = 0)
+  text(x = par("usr")[2] - 0.1 * (par("usr")[2] - par("usr")[1]), 
+       y = par("usr")[3] + 0.1 * (par("usr")[4] - par("usr")[3]), 
+       labels = "X indicates an outlier", 
+       pos = 2, offset = -0.5, col = "black", cex = 0.8)
 }
 
 axes <- c("Sepal.Length", "Sepal.Width")
